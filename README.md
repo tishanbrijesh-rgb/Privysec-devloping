@@ -1,32 +1,86 @@
+# ⚡ PRIVYSEC — Smart Network Scanner
 
-# ⚔ PrivySec — AI-Powered Security Scanner
-
-## 🚀 Overview
-
-PrivySec is an AI-powered cybersecurity tool that scans a system for open ports and provides **intelligent risk analysis and remediation suggestions**.
-
-Unlike traditional scanners like Nmap, PrivySec translates raw scan data into **human-readable security insights** using AI.
+> A lightweight IoT Discovery Agent that scans local networks, identifies devices, and provides actionable security insights using non-intrusive techniques.
 
 ---
 
-## 🎯 Problem Statement
+## 📌 Overview
 
-Most security tools provide **technical outputs** that are difficult for beginners and non-experts to understand.
+Modern local networks (LANs) contain multiple unknown or unmanaged devices such as laptops, phones, and IoT systems. Traditional tools like Nmap provide raw data but lack interpretation.
 
-➡️ This creates a gap between **detection and action**
+**PRIVYSEC bridges that gap** by transforming scan results into:
+- Device identification
+- Network awareness
+- Security risk analysis
+
+---
+
+## 🚀 Key Features
+
+- ⚡ **Fast Autonomous Discovery**
+  - Automatically detects subnet
+  - Finds active hosts in under 30 seconds
+
+- 🧠 **Smart Device Fingerprinting**
+  - Uses MAC address, vendor, ports, and services
+  - Classifies devices (Computer, Mobile, Gateway)
+
+- 🌐 **Network Type Detection**
+  - Identifies Private LAN vs NAT/Hotspot networks
+
+- 🔍 **Multiple Scan Modes**
+  - Quick → Fast common ports
+  - Balanced → Standard scan
+  - Deep → Full port scan
+  - Smart → Optimized aggressive scan
+
+- 🔐 **Security Scorecard (Core Feature)**
+  - Risk Level (LOW / MEDIUM / HIGH)
+  - Security Score (0–100)
+  - Identifies vulnerabilities
+  - Provides recommendations
+
 
 ---
 
-## 💡 Solution
+## ⚙️ How It Works
 
-PrivySec bridges this gap by:
-
-* Scanning systems for open ports
-* Identifying running services
-* Using AI to explain:
-
-  * ⚠ Risks
-  * 🛠 Fixes
-* Presenting results in a clean and simple format
+1. Detect local IP and subnet automatically  
+2. Perform fast host discovery  
+3. Scan selected device using Nmap  
+4. Parse scan results into structured data  
+5. Apply fingerprinting logic  
+6. Generate a security scorecard  
 
 ---
+
+## 🧠 Device Fingerprinting Logic
+
+PRIVYSEC uses **multi-signal detection**:
+
+- MAC vendor (e.g., Intel → Computer)
+- Open ports (e.g., DNS → Gateway)
+- Network behavior (NAT vs LAN)
+
+### Example:
+
+| Signal | Inference |
+|------|----------|
+| `.1` IP + Port 53 | Gateway / Hotspot |
+| Intel Vendor | Computer |
+| No ports + no MAC | Mobile / Restricted device |
+
+---
+
+## 🔐 Security Scorecard
+
+Each device is evaluated for security risks.
+
+### Output includes:
+
+- **Risk Level**: LOW / MEDIUM / HIGH  
+- **Score**: 0–100  
+- **Issues**: Detected weaknesses  
+- **Recommendations**: Fix suggestions  
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
