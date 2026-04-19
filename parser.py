@@ -2,17 +2,29 @@ import re
 
 
 def parse_nmap(output):
-    results = []
+    device = {
+        "ip": None,
+        "mac": "Unknown",
+        "vendor": "Unknown",
+        "ports": [],
+        "services": []
+    }
 
-    pattern = r"(\d+/tcp)\s+open\s+([\w\-]+)\s*(.*)"
+    for line in output.split("\n"):
+        line = line.strip()
 
-    matches = re.findall(pattern, output)
+        if "Nmap scan report for" in line:
+            device["ip"] = line.split()[-1]
 
-    for port, service, extra in matches:
-        full_service = f"{service} {extra}".strip()
-        results.append({
-            "port": port,
-            "service": full_service if full_service else "unknown"
-        })
+        elif "MAC Address:" in line:
+            match = re.search(r"MAC Address: ([\w:]+) \((.*?)\)", line)
+            if match:
+                device["mac"] = match.group(1)
+                device["vendor"] = match.group(2)
 
-    return results
+        elif "/tcp" in line and "open" in line:
+            parts = line.split()
+            device["ports"].append(parts[0])
+            device["services"].append(parts[2] if len(parts) > 2 else "unknown")
+
+    return device
