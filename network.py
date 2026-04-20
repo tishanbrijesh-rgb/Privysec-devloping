@@ -11,6 +11,8 @@ def detect_network_type(device):
         return "Unknown"
 
     if ip_obj.is_private:
-        return "Private NAT / Hotspot Network" if mac == "Unknown" else "Private LAN Network"
+        if mac == "Unknown":
+            return "Private NAT / Hotspot Network"
+        return "Private LAN Network"
 
     return "Public Network"

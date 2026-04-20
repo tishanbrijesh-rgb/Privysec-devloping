@@ -1,31 +1,40 @@
 def calculate_score(device):
-    ports = set(device["ports"])
-    services = set(device["services"])
+
+    ports = set(device.get("ports", []))
+    device_type = device.get("type", "").lower()
 
     score = 100
     issues = []
     fixes = []
 
-    if "23/tcp" in ports:
-        score -= 30
-        issues.append("Telnet exposed")
-        fixes.append("Disable Telnet")
-
     if "21/tcp" in ports:
-        score -= 20
+        score -= 10
         issues.append("FTP exposed")
         fixes.append("Use SFTP")
 
-    if "80/tcp" in ports:
-        score -= 10
-        issues.append("HTTP used")
-        fixes.append("Use HTTPS")
+    if "23/tcp" in ports:
+        score -= 25
+        issues.append("Telnet insecure")
+        fixes.append("Use SSH")
 
-    if len(ports) > 5:
-        score -= 15
-        issues.append("Too many open ports")
-        fixes.append("Close unused ports")
+    if "53/tcp" in ports:
+        if "gateway" in device_type:
+            score -= 5
+        else:
+            score -= 15
+            issues.append("Unexpected DNS service")
+            fixes.append("Disable DNS")
 
-    risk = "LOW" if score >= 80 else "MEDIUM" if score >= 50 else "HIGH"
+    if not ports:
+        score += 5
+
+    score = max(0, min(100, score))
+
+    if score >= 80:
+        risk = "LOW"
+    elif score >= 50:
+        risk = "MEDIUM"
+    else:
+        risk = "HIGH"
 
     return score, risk, issues, fixes

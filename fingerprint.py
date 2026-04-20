@@ -1,27 +1,44 @@
 def classify_device(device):
-    ports = set(device["ports"])
-    vendor = device["vendor"].lower()
 
-    score = {"Router": 0, "Computer": 0, "Mobile": 0}
+    ports = set(device.get("ports", []))
+    vendor = (device.get("vendor") or "").lower()
+    ip = device.get("ip", "")
+
+    score = {
+        "gateway": 0,
+        "mobile": 0,
+        "computer": 0,
+        "iot": 0
+    }
+
     reasons = []
 
-    if device["ip"].endswith(".1") and "53/tcp" in ports:
-        return "Mobile Hotspot / Gateway", ["Gateway IP + DNS"], 85
+    if "53/tcp" in ports:
+        score["gateway"] += 40
+        reasons.append("DNS service detected")
 
-    if len(ports) >= 2:
-        score["Computer"] += 2
+    if ip.endswith(".1"):
+        score["gateway"] += 30
+        reasons.append("Gateway IP pattern (.1)")
 
-    if any(p in ports for p in ["21/tcp", "22/tcp", "3389/tcp"]):
-        score["Computer"] += 2
-        reasons.append("Common computer services")
+    if len(ports) >= 3:
+        score["gateway"] += 20
+
+    if not ports:
+        score["mobile"] += 60
+        reasons.append("No open ports (NAT device)")
 
     if "intel" in vendor:
-        score["Computer"] += 2
+        score["computer"] += 40
 
-    if not ports and device["mac"] == "Unknown":
-        return "Mobile / Restricted Device", ["NAT + no ports"], 90
+    device_type = max(score, key=score.get)
+    confidence = min(100, score[device_type])
 
-    best = max(score, key=score.get)
-    confidence = min(90, score[best] * 20)
+    labels = {
+        "gateway": "Mobile Hotspot / Gateway",
+        "mobile": "Mobile / Restricted Device",
+        "computer": "Computer",
+        "iot": "Smart IoT Device"
+    }
 
-    return best, reasons, confidence
+    return labels[device_type], confidence, reasons
