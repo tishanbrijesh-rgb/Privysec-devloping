@@ -137,31 +137,45 @@ cd privysec
 
 ---
 
-### 2. Create Virtual Environment (Recommended)
+## 🐍 Create Virtual Environment
+
+### 🔹 On Linux / macOS:
 
 ```bash
 python3 -m venv venv
 ```
 
+### 🔹 On Windows:
+
+```bat
+python -m venv venv
+```
+
 ---
 
-### 3. Activate Virtual Environment
+## ⚡ Activate Virtual Environment
 
-#### On Linux / macOS:
+### 🔹 On Linux / macOS:
 
 ```bash
 source venv/bin/activate
 ```
 
-#### On Windows:
+### 🔹 On Windows (CMD):
 
-```bash
+```bat
 venv\Scripts\activate
+```
+
+### 🔹 On Windows (PowerShell):
+
+```powershell
+venv\Scripts\Activate.ps1
 ```
 
 ---
 
-### 4. Install Dependencies
+## 📦 Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -169,7 +183,7 @@ pip install -r requirements.txt
 
 ---
 
-### 5. Setup Environment Variables
+## 🔐 Setup Environment Variables
 
 Create a `.env` file in the root directory:
 
@@ -179,15 +193,23 @@ OPENAI_API_KEY=your_api_key_here
 
 ---
 
-### 6. Run the Application
+## ▶️ Run the Application
+
+### 🔹 Linux / macOS:
 
 ```bash
 python app.py
 ```
 
+### 🔹 Windows:
+
+```bat
+python app.py
+```
+
 ---
 
-### 7. Open in Browser
+## 🌐 Open in Browser
 
 ```
 http://127.0.0.1:5000
@@ -195,31 +217,31 @@ http://127.0.0.1:5000
 
 ---
 
-## ⚠️ Notes
+## ⚠️ Additional Requirements
 
-* Make sure Nmap is installed on your system:
+### Install Nmap
+
+### 🔹 Linux:
 
 ```bash
 sudo apt install nmap
 ```
 
-* Do NOT upload your `.env` file to GitHub.
+### 🔹 Windows:
 
-* Always activate the virtual environment before running the app.
+* Download from: https://nmap.org/download.html
+* Install normally (Next → Next)
+
+---
+
+## 🧠 Notes
+
+* Always activate `venv` before running
+* Do NOT upload `.env` to GitHub
+* Works on Linux, macOS, and Windows
 
 ---
 
-## 🧠 Features
-
-* 🔍 Network Scanning (Nmap)
-* 🧠 Device Fingerprinting
-* 📊 Risk Scoring System
-* 🚨 Attack Surface Analysis
-* 🛠 AI-Generated Issues & Fixes
-* 🤖 AI Security Insights
-* 📜 Scan History
-
----
 snapshorts 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4e5a4f07-6aba-4787-986e-e18c66f1b296" />
 
