@@ -221,4 +221,5 @@ sudo apt install nmap
 
 ---
 snapshorts 
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4e5a4f07-6aba-4787-986e-e18c66f1b296" />
 
