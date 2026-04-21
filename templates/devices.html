@@ -1,37 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Devices</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PRIVYSEC // NODES</title>
 </head>
 <body>
+    <div class="main" style="max-width: 1200px;">
+        <h2 style="text-align: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 20px; text-shadow: 0 0 10px var(--main-glow);">
+            🛰 ACTIVE_INTEL_NODES [{{ hosts|length }}]
+        </h2>
 
-<div class="container">
-    <h2>📡 Active Devices</h2>
+        <div class="grid" style="margin-top: 40px;">
+            {% if hosts %}
+                {% for h in hosts %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px;">
+                        <span style="color: var(--main-color); font-weight: bold;">● LIVE_NODE</span>
+                        <span style="font-size: 0.7rem; opacity: 0.5;">ID_00{{ loop.index }}</span>
+                    </div>
+                    
+                    <h3 style="font-size: 1.5rem; margin: 10px 0;">{{ h }}</h3>
+                    
+                    <div style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px; line-height: 1.6;">
+                        SIG_STRENGTH: <span style="color: var(--main-color);">98%</span><br>
+                        LATENCY: <span style="color: var(--accent-blue);">14ms</span>
+                    </div>
 
-    <div class="grid">
-        {% for host in hosts %}
-        <div class="card">
-            <h3>{{ host }}</h3>
-
-            <form action="/scan" method="post">
-                <input type="hidden" name="target" value="{{ host }}">
-
-                <select name="mode">
-                    <option value="quick">Quick</option>
-                    <option value="balanced">Balanced</option>
-                    <option value="deep">Deep</option>
-                </select>
-
-                <button class="btn">Scan</button>
-            </form>
+                    <form method="POST" action="/scan">
+                        <input type="hidden" name="target" value="{{ h }}">
+                        <select name="mode" class="tactical-select">
+                            <option value="quick">⚡ QUICK_INTERCEPT</option>
+                            <option value="balanced">⚖ BALANCED_ANALYSIS</option>
+                            <option value="deep">💀 DEEP_OSINT_SCAN</option>
+                        </select>
+                        <button class="btn" style="width: 100%;">EXECUTE_SCAN</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="card wide-card alert-card">
+                    <h3 style="text-align: center; color: var(--alert-color);">⚠ NO DEVICES DETECTED IN SUBNET</h3>
+                </div>
+            {% endif %}
         </div>
-        {% endfor %}
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="/"><button class="btn">← ABORT_SESSION</button></a>
+        </div>
     </div>
-
-    <br>
-    <a href="/" class="btn-secondary">⬅ Back</a>
-</div>
-
 </body>
 </html>

@@ -1,3 +1,5 @@
+# scanner.py
+
 import subprocess
 
 def run_nmap(target, mode):
@@ -6,10 +8,10 @@ def run_nmap(target, mode):
         cmd = ["nmap", "-T4", "-F", target]
 
     elif mode == "balanced":
-        cmd = ["nmap", "-sS", "-T4", target]
+        cmd = ["nmap", "-sS", "-sV", "-T4", target]
 
     elif mode == "deep":
-        cmd = ["nmap", "-sS", "-sV", "-T4", "-p-", target]
+        cmd = ["nmap", "-sS", "-sV", "-O", "-T4", "-p-", target]
 
     else:
         cmd = ["nmap", "-T4", "-F", target]

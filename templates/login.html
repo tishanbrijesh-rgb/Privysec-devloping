@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>PRIVYSEC // AUTH</title>
+</head>
+<body>
+
+<div class="center-box">
+    <div class="glitch" style="font-size: 2.5rem;">SECURE_UPLINK</div>
+    <p style="color: var(--main-color); letter-spacing: 2px; margin-bottom: 40px;">[ AUTHENTICATION REQUIRED ]</p>
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="OPERATOR_ID" required autocomplete="off"><br>
+        <input type="password" name="password" placeholder="PASSPHRASE" required><br><br>
+        <button class="btn">INITIALIZE_HANDSHAKE</button>
+    </form>
+</div>
+
+</body>
+</html>

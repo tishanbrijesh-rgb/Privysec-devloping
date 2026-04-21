@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PRIVYSEC</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PRIVYSEC // INIT</title>
 </head>
 <body>
+    <div class="center-box">
+        <div class="glitch">PRIVYSEC</div>
+        <p style="letter-spacing: 6px; color: var(--main-color); text-shadow: 0 0 10px var(--main-glow);">[ GLOBAL TACTICAL UPLINK ]</p>
+        
+        <div class="card" style="display: inline-block; text-align: left; margin: 30px 0; padding: 15px 30px;">
+            <span style="color: #aaa; font-size: 0.85rem; line-height: 1.8;">
+                NODE_STATION: PS_BENGALURU_08<br>
+                SEC_PROTOCOL: AES_256_GCM<br>
+                STATUS: <span style="color: var(--main-color); font-weight: bold;">READY_FOR_HANDSHAKE</span>
+            </span>
+        </div>
+        <br>
 
-<div class="center-box">
-    <h1>⚡ PRIVYSEC</h1>
-    <p>Smart Network Scanner</p>
+        <button id="scan-btn" class="btn" onclick="startScan()" style="font-size: 1.2rem; padding: 15px 30px;">ENGAGE RADAR</button>
 
-    <!-- DISCOVER -->
-    <form action="/discover">
-        <button class="btn">Discover Devices</button>
-    </form>
+        <div id="loading" style="display:none; margin-top:30px; width: 300px; margin-left: auto; margin-right: auto;">
+            <p style="color: var(--warning-color); font-weight: bold; letter-spacing: 1px;">BRUTEFORCING TOPOLOGY...</p>
+            <div class="progress-container" style="height: 10px;">
+                <div class="progress-bar" id="startBar" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
 
-    <br>
-
-    <!-- DIRECT SCAN -->
-    <form action="/scan" method="post">
-        <input name="target" placeholder="Enter IP" required>
-
-        <select name="mode">
-            <option value="quick">Quick</option>
-            <option value="balanced">Balanced</option>
-            <option value="deep">Deep</option>
-        </select>
-
-        <button class="btn">Scan</button>
-    </form>
-</div>
-
+    <script>
+    function startScan(){
+        document.getElementById("scan-btn").style.display = "none";
+        document.getElementById("loading").style.display = "block";
+        let width = 0;
+        let bar = document.getElementById("startBar");
+        let interval = setInterval(()=>{
+            width += Math.floor(Math.random() * 15) + 5; // Faster, chunkier loading
+            if(width > 100) width = 100;
+            bar.style.width = width + "%";
+            if(width >= 100){
+                clearInterval(interval);
+                setTimeout(() => { window.location.href = "/discover"; }, 300);
+            }
+        }, 150);
+    }
+    </script>
 </body>
 </html>

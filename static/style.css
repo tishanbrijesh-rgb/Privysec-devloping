@@ -1,83 +1,250 @@
+/* PRIVYSEC ADVANCED STYLESHEET */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* --- VARIABLES --- */
+:root {
+    --bg-color: #050505;
+    --card-bg: rgba(10, 10, 10, 0.7);
+    --main-color: #00ff88;
+    --main-glow: rgba(0, 255, 136, 0.3);
+    --accent-blue: #00d9ff;
+    --alert-color: #ff3333;
+    --alert-glow: rgba(255, 51, 51, 0.4);
+    --warning-color: #ffaa00;
+    --border-color: rgba(0, 255, 136, 0.2);
+    --text-color: #e0e0e0;
+}
+
+/* --- GLOBAL --- */
 body {
     margin: 0;
-    font-family: Arial;
-    background: #0b1a2b;
-    color: white;
-}
-
-/* Center box */
-.center-box {
-    text-align: center;
-    margin-top: 100px;
-}
-
-input, select {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 6px;
-    border: none;
-}
-
-/* Buttons */
-.btn {
-    background: #00bcd4;
-    color: black;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-}
-
-.btn-secondary {
-    background: #444;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: white;
-    border-radius: 5px;
-}
-
-/* Layout */
-.container {
-    padding: 40px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-/* Cards */
-.card {
-    background: #132c45;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-}
-
-.highlight {
-    border: 2px solid gold;
-}
-
-/* Dashboard */
-.dashboard {
-    display: flex;
-}
-
-.sidebar {
-    width: 200px;
-    background: #091421;
-    padding: 20px;
-}
-
-.sidebar a {
-    display: block;
-    color: white;
-    margin: 10px 0;
-    text-decoration: none;
+    background-color: var(--bg-color);
+    background-image: 
+        linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
+    color: var(--text-color);
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
 }
 
 .main {
-    flex: 1;
-    padding: 30px;
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.center-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+/* --- GRID SYSTEM --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.wide-card { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+    .half-card { grid-column: span 2; }
+}
+
+/* --- TACTICAL CARDS (GLASSMORPHISM) --- */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    border-top: 2px solid var(--main-color);
+    border-left: 2px solid var(--main-color);
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 12px; height: 12px;
+    border-bottom: 2px solid var(--main-color);
+    border-right: 2px solid var(--main-color);
+    opacity: 0.5;
+}
+
+.card:hover {
+    border-color: var(--main-color);
+    box-shadow: 0 0 25px var(--main-glow);
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    color: var(--main-color);
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 8px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+.card p {
+    margin: 8px 0;
+    transition: transform 0.2s;
+    font-size: 0.95rem;
+}
+
+.card p:hover {
+    transform: translateX(6px);
+    color: #fff;
+}
+
+/* --- UI ELEMENTS --- */
+.btn {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--main-color);
+    color: var(--main-color);
+    padding: 12px 24px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background: var(--main-color);
+    color: #000;
+    box-shadow: 0 0 20px var(--main-glow);
+}
+
+.tactical-select {
+    background: rgba(0,0,0,0.8);
+    color: var(--main-color);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    width: 100%;
+    margin-bottom: 15px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.tactical-select:focus, .tactical-select:hover {
+    border-color: var(--main-color);
+}
+
+input[type="text"], input[type="password"] {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+    color: var(--main-color);
+    padding: 12px;
+    width: 280px;
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 15px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 15px var(--main-glow);
+}
+
+/* --- TERMINAL --- */
+.terminal {
+    background: rgba(5, 5, 5, 0.95);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--main-color);
+    color: #ccc;
+    padding: 20px;
+    height: 250px;
+    overflow-y: auto;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+/* --- STATUS & ALERTS --- */
+.risk-low { color: var(--main-color); text-shadow: 0 0 10px var(--main-glow); }
+.risk-medium { color: var(--warning-color); text-shadow: 0 0 10px rgba(255,170,0,0.5); }
+.risk-high { color: var(--alert-color); text-shadow: 0 0 10px var(--alert-glow); }
+
+.big { font-size: 3.5rem; font-weight: bold; margin: 10px 0; line-height: 1; }
+
+.port-safe { color: var(--main-color); }
+.port-medium { color: var(--warning-color); }
+.port-risk { color: var(--alert-color); }
+
+.alert-card { 
+    border: 1px solid var(--alert-color) !important; 
+    background: rgba(20, 0, 0, 0.8);
+    animation: alertPulse 2s infinite; 
+}
+.alert-card::before { border-color: var(--alert-color); }
+
+@keyframes alertPulse { 
+    0% { box-shadow: 0 0 5px var(--alert-color); } 
+    50% { box-shadow: 0 0 25px var(--alert-glow); } 
+    100% { box-shadow: 0 0 5px var(--alert-color); } 
+}
+
+.text-high { color: var(--alert-color); }
+.text-medium { color: var(--warning-color); }
+.text-low { color: var(--main-color); }
+
+/* --- PROGRESS BARS --- */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    margin-top: 15px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--main-color);
+    box-shadow: 0 0 10px var(--main-glow);
+    transition: width 1s ease-in-out;
+}
+
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+::-webkit-scrollbar-thumb { background: var(--border-color); }
+::-webkit-scrollbar-thumb:hover { background: var(--main-color); }
+
+/* GLITCH TEXT */
+.glitch {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px var(--alert-color), -2px -2px var(--accent-blue);
+    letter-spacing: 8px;
+    margin-bottom: 10px;
 }

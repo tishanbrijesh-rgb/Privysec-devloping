@@ -1,15 +1,6 @@
-import re
+# parser.py
 
-COMMON_PORTS = {
-    "21/tcp": "FTP",
-    "22/tcp": "SSH",
-    "23/tcp": "Telnet",
-    "53/tcp": "DNS",
-    "80/tcp": "HTTP",
-    "443/tcp": "HTTPS",
-    "554/tcp": "RTSP",
-    "8080/tcp": "HTTP-Proxy",
-}
+import re
 
 def parse_nmap(output):
 
@@ -18,28 +9,50 @@ def parse_nmap(output):
         "mac": "Unknown",
         "vendor": "Unknown",
         "ports": [],
-        "services": []
+        "services": [],
+        "os": "Unknown"
     }
 
     for line in output.split("\n"):
 
+        line = line.strip()
+
+        # 📡 IP detection
         if "Nmap scan report for" in line:
             device["ip"] = line.split()[-1]
 
+        # 🧬 MAC + Vendor detection
         elif "MAC Address" in line:
-            match = re.search(r"MAC Address: ([\w:]+)", line)
+            match = re.search(r"MAC Address: ([\w:]+) \((.*?)\)", line)
             if match:
                 device["mac"] = match.group(1)
+                device["vendor"] = match.group(2)
 
-        elif "/tcp" in line and "open" in line:
-            port = line.split()[0]
-
-            if port.startswith("49"):
-                service = "Dynamic Port"
             else:
-                service = COMMON_PORTS.get(port, "Unknown Service")
+                match = re.search(r"MAC Address: ([\w:]+)", line)
+                if match:
+                    device["mac"] = match.group(1)
+
+        # 🔓 Port + Service + Version detection (🔥 IMPORTANT)
+        elif "/tcp" in line and "open" in line:
+            parts = line.split()
+
+            port = parts[0]
+
+            # Safe parsing
+            service = parts[2] if len(parts) > 2 else "unknown"
+            version = " ".join(parts[3:]) if len(parts) > 3 else ""
+
+            full_service = f"{service} {version}".strip()
 
             device["ports"].append(port)
-            device["services"].append(service)
+            device["services"].append(full_service)
+
+        # 💻 OS detection (from -O or -sV)
+        elif "OS details" in line:
+            device["os"] = line.split(":", 1)[-1].strip()
+
+        elif "Running:" in line:
+            device["os"] = line.split(":", 1)[-1].strip()
 
     return device

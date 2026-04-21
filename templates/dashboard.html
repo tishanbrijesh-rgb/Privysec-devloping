@@ -1,102 +1,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PRIVYSEC // DASHBOARD</title>
 </head>
 <body>
 
-<div class="dashboard">
+<div class="main">
+    <h2 style="color: #fff; text-shadow: 0 0 10px var(--main-glow); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 30px;">
+        <span style="color: var(--main-color);">[SYS_UPLINK]</span> Intelligence Report: {{ data.ip }}
+    </h2>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>⚡ PRIVYSEC</h2>
-        <a href="/">Home</a>
-        <a href="/discover">Devices</a>
+    {% if unknown_alert %}
+    <div class="card alert-card wide-card" style="margin-bottom: 25px;">
+        <h3 style="color: var(--alert-color);">⚠ CRITICAL: UNKNOWN DEVICE DETECTED</h3>
+        <p class="text-high">Unidentified footprint detected on secure subnet. Initiate immediate quarantine protocols.</p>
     </div>
+    {% endif %}
 
-    <!-- Main Content -->
-    <div class="main">
-
-        <h2>Security Intelligence Dashboard</h2>
-
-        <div class="grid">
-
-            <!-- Device Info -->
-            <div class="card">
-                <h3>📊 Device Info</h3>
-                <p><b>IP:</b> {{ data.ip }}</p>
-                <p><b>MAC:</b> {{ data.mac }}</p>
-            </div>
-
-            <!-- Ports -->
-            <div class="card">
-                <h3>🔓 Open Ports</h3>
-                {% if data.ports %}
-                    {% for p in data.ports %}
-                        <p>• {{ p }}</p>
-                    {% endfor %}
-                {% else %}
-                    <p>No open ports</p>
-                {% endif %}
-            </div>
-
-            <!-- Classification -->
-            <div class="card">
-                <h3>🧠 AI Classification</h3>
-                <p>{{ device.type }}</p>
-                <p>{{ device.confidence }}% confidence</p>
-
-                <ul>
-                {% for r in device.reasons %}
-                    <li>{{ r }}</li>
-                {% endfor %}
-                </ul>
-            </div>
-
-            <!-- Behavior -->
-            <div class="card">
-                <h3>📡 Behavior</h3>
-
-                {% if "53/tcp" in data.ports %}
-                    <p>Acts as DNS → likely gateway</p>
-                {% endif %}
-
-                {% if not data.ports %}
-                    <p>Protected by NAT / firewall</p>
-                {% endif %}
-            </div>
-
-            <!-- Risk -->
-            <div class="card highlight">
-                <h3>🔐 Risk</h3>
-                <h1>{{ risk }}</h1>
-                <p>{{ score }}/100</p>
-            </div>
-
-            <!-- Issues -->
-            <div class="card">
-                <h3>⚠ Issues</h3>
-                {% for i in issues %}
-                    <p>• {{ i }}</p>
-                {% endfor %}
-            </div>
-
-            <!-- Fixes -->
-            <div class="card">
-                <h3>🛠 Fixes</h3>
-                {% for f in fixes %}
-                    <p>• {{ f }}</p>
-                {% endfor %}
-            </div>
-
+    <div class="grid">
+        
+        <div class="card">
+            <h3>🛰 Node Identity</h3>
+            <p><b>IP_ADDR:</b> {{ data.ip }}</p>
+            <p><b>MAC_ADDR:</b> {{ data.mac }}</p>
+            <p><b>NET_ZONE:</b> {{ network_type }}</p>
         </div>
 
-        <br>
-        <a href="/discover" class="btn-secondary">⬅ Back</a>
+        <div class="card">
+            <h3>🧠 Classification Engine</h3>
+            <p><b>PROFILE:</b> {{ device.type }}</p>
+            <p><b>CONFIDENCE:</b> {{ device.confidence }}%</p>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: {{ device.confidence }}%"></div>
+            </div>
+        </div>
+
+        <div class="card half-card">
+            <h3>⚠ Threat Assessment</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p class="big risk-{{ risk|lower }}">{{ risk }}</p>
+                    <p>SEVERITY INDEX: {{ score }}/100</p>
+                </div>
+                <div style="text-align: right;">
+                    <p class="text-high">HIGH_SEV: {{ attack_surface.high }}</p>
+                    <p class="text-medium">MED_SEV: {{ attack_surface.medium }}</p>
+                    <p class="text-low">LOW_SEV: {{ attack_surface.low }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🔓 Active Port Matrix</h3>
+            <div style="max-height: 150px; overflow-y: auto;">
+                {% for p, s in paired_ports %}
+                <p class="
+                    {% if '23/tcp' in p or '21/tcp' in p %} port-risk
+                    {% elif '80/tcp' in p %} port-medium
+                    {% else %} port-safe {% endif %}
+                ">
+                    > {{ p }} <span style="opacity: 0.5;">//</span> {{ s }}
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>💀 Active CVE Signatures</h3>
+            {% if vulns %}
+                {% for v in vulns %}
+                <p class="text-high">[!] {{ v }}</p>
+                {% endfor %}
+            {% else %}
+                <p class="text-low">[✓] NO KNOWN CVE SIGNATURES</p>
+            {% endif %}
+        </div>
+
+        <div class="card wide-card">
+            <h3>🛠 Tactical Remediation</h3>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <b style="color: var(--alert-color);">VECTORS FOUND:</b>
+                    {% for i in issues %}
+                    <p class="text-high">• {{ i }}</p>
+                    {% endfor %}
+                </div>
+                <div>
+                    <b style="color: var(--main-color);">RECOMMENDED FIXES:</b>
+                    {% for f in fixes %}
+                    <p class="text-low">• {{ f }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
     </div>
+
+    <div class="terminal" id="terminalBox">
+        <div id="terminal"></div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="/discover">
+            <button class="btn">← RETURN TO RADAR</button>
+        </a>
+    </div>
 </div>
+
+<script>
+const lines = [
+    "<span style='color: var(--main-color)'>[SYSTEM]</span> Initializing advanced scan engine...",
+    "<span style='color: #ccc'>[INFO]</span> Injecting packets to target {{ data.ip }}...",
+    "<span style='color: var(--warning-color)'>[ANALYSIS]</span> Mapping open ports and service headers...",
+    "<span style='color: #ccc'>[INFO]</span> Correlating fingerprints with CVE database...",
+    "<span style='color: var(--main-color)'>[OK]</span> Risk calculation complete.",
+    "<span style='color: var(--accent-blue)'>[✓] REPORT GENERATED SUCCESSFULLY</span>"
+];
+
+let i = 0;
+const terminalDiv = document.getElementById("terminal");
+const terminalBox = document.getElementById("terminalBox");
+
+function animate(){
+    if(i < lines.length){
+        terminalDiv.innerHTML += lines[i] + "<br><br>";
+        terminalBox.scrollTop = terminalBox.scrollHeight; // Auto-scroll
+        i++;
+        setTimeout(animate, Math.random() * 400 + 200); // Randomized typing speed
+    }
+}
+setTimeout(animate, 500);
+</script>
 
 </body>
 </html>

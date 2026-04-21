@@ -1,86 +1,224 @@
-# ⚡ PRIVYSEC — Smart Network Scanner
+# 🛰️ PRIVYSEC — Intelligent IoT Discovery Agent
 
-> A lightweight IoT Discovery Agent that scans local networks, identifies devices, and provides actionable security insights using non-intrusive techniques.
-
----
-
-## 📌 Overview
-
-Modern local networks (LANs) contain multiple unknown or unmanaged devices such as laptops, phones, and IoT systems. Traditional tools like Nmap provide raw data but lack interpretation.
-
-**PRIVYSEC bridges that gap** by transforming scan results into:
-- Device identification
-- Network awareness
-- Security risk analysis
+> **"From unknown devices to actionable security insights — instantly."**
 
 ---
 
-## 🚀 Key Features
+## 🚨 Problem Statement
 
-- ⚡ **Fast Autonomous Discovery**
-  - Automatically detects subnet
-  - Finds active hosts in under 30 seconds
+Modern networks are filled with IoT devices like cameras, routers, printers, and smart TVs.
+Most users **do not know**:
 
-- 🧠 **Smart Device Fingerprinting**
-  - Uses MAC address, vendor, ports, and services
-  - Classifies devices (Computer, Mobile, Gateway)
+* What devices are connected
+* What services they expose
+* How vulnerable they are
 
-- 🌐 **Network Type Detection**
-  - Identifies Private LAN vs NAT/Hotspot networks
-
-- 🔍 **Multiple Scan Modes**
-  - Quick → Fast common ports
-  - Balanced → Standard scan
-  - Deep → Full port scan
-  - Smart → Optimized aggressive scan
-
-- 🔐 **Security Scorecard (Core Feature)**
-  - Risk Level (LOW / MEDIUM / HIGH)
-  - Security Score (0–100)
-  - Identifies vulnerabilities
-  - Provides recommendations
-
+This lack of visibility creates a **major security risk**.
 
 ---
 
-## ⚙️ How It Works
+## 💡 Proposed Solution
 
-1. Detect local IP and subnet automatically  
-2. Perform fast host discovery  
-3. Scan selected device using Nmap  
-4. Parse scan results into structured data  
-5. Apply fingerprinting logic  
-6. Generate a security scorecard  
+**PRIVYSEC** is an intelligent IoT Discovery Agent that:
 
----
+* Automatically scans your local network
+* Identifies active devices
+* Classifies them using fingerprinting logic
+* Detects vulnerabilities based on open ports
+* Assigns a **security score**
+* Provides **actionable fixes**
 
-## 🧠 Device Fingerprinting Logic
-
-PRIVYSEC uses **multi-signal detection**:
-
-- MAC vendor (e.g., Intel → Computer)
-- Open ports (e.g., DNS → Gateway)
-- Network behavior (NAT vs LAN)
-
-### Example:
-
-| Signal | Inference |
-|------|----------|
-| `.1` IP + Port 53 | Gateway / Hotspot |
-| Intel Vendor | Computer |
-| No ports + no MAC | Mobile / Restricted device |
+👉 It transforms raw network data into **clear, human-readable security intelligence**
 
 ---
 
-## 🔐 Security Scorecard
+## ⚙️ Tech Stack
 
-Each device is evaluated for security risks.
+* **Backend:** Python (Flask)
+* **Scanning Engine:** Nmap
+* **Frontend:** HTML, CSS (Cyberpunk UI)
+* **Logic Modules:**
 
-### Output includes:
+  * Device Fingerprinting Engine
+  * Risk Scoring System
+  * CVE Detection Engine
 
-- **Risk Level**: LOW / MEDIUM / HIGH  
-- **Score**: 0–100  
-- **Issues**: Detected weaknesses  
-- **Recommendations**: Fix suggestions  
+---
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 🚀 Features
+
+### 🔍 Network Discovery
+
+* Automatically scans LAN for active hosts
+
+### 🧠 Smart Device Fingerprinting
+
+* Classifies devices:
+
+  * Router / Gateway
+  * IoT Devices
+  * Computers
+  * Mobile Devices
+
+### 🔐 Security Scorecard
+
+* Assigns score (0–100)
+* Risk Levels:
+
+  * LOW
+  * MEDIUM
+  * HIGH
+
+### ☠️ Vulnerability Detection
+
+* Maps open ports to known CVEs
+* Highlights risky services like:
+
+  * Telnet
+  * FTP
+  * SMB
+
+### 📊 Attack Surface Analysis
+
+* Shows:
+
+  * High-risk ports
+  * Medium-risk ports
+  * Low-risk ports
+
+### 📈 Risk Visualization (NEW 🔥)
+
+* Color-based risk bars
+* Risk distribution chart
+
+### 🚨 Most Dangerous Device (NEW 🔥)
+
+* Automatically highlights:
+
+  * Highest risk device
+  * Risk score
+  * Open ports
+  * Reason for risk
+
+### 🧾 Scan History
+
+* Stores last 10 scans
+
+---
+
+## 🏗️ Architecture / Flow
+
+User Input (Target IP / Scan)
+        ↓
+Network Discovery (Nmap)
+        ↓
+Parser → Extract Ports, Services, OS
+        ↓
+Fingerprint Engine → Device Type
+        ↓
+Score Engine → Risk + Issues + Fixes
+        ↓
+Vulnerability Engine → CVE Detection
+        ↓
+Dashboard Visualization
+```
+
+---
+
+
+## 🚀 Setup & Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/privysec.git
+cd privysec
+```
+
+---
+
+### 2. Create Virtual Environment (Recommended)
+
+```bash
+python3 -m venv venv
+```
+
+---
+
+### 3. Activate Virtual Environment
+
+#### On Linux / macOS:
+
+```bash
+source venv/bin/activate
+```
+
+#### On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+---
+
+### 4. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 5. Setup Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+OPENAI_API_KEY=your_api_key_here
+```
+
+---
+
+### 6. Run the Application
+
+```bash
+python app.py
+```
+
+---
+
+### 7. Open in Browser
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## ⚠️ Notes
+
+* Make sure Nmap is installed on your system:
+
+```bash
+sudo apt install nmap
+```
+
+* Do NOT upload your `.env` file to GitHub.
+
+* Always activate the virtual environment before running the app.
+
+---
+
+## 🧠 Features
+
+* 🔍 Network Scanning (Nmap)
+* 🧠 Device Fingerprinting
+* 📊 Risk Scoring System
+* 🚨 Attack Surface Analysis
+* 🛠 AI-Generated Issues & Fixes
+* 🤖 AI Security Insights
+* 📜 Scan History
+
+---
+snapshorts 
+

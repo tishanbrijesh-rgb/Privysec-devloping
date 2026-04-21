@@ -1,64 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Scan Result</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>PRIVYSEC // RESULT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
 
-    <h2>📊 Device Info</h2>
-    <p><b>IP:</b> {{device.ip}}</p>
-    <p><b>MAC:</b> {{device.mac}}</p>
+<div class="main" style="max-width: 800px; margin-top: 5vh;">
+    <div class="card">
+        <h2 style="color: var(--main-color); border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">[ SCAN_COMPLETE ]</h2>
+        
+        <div style="background: rgba(0,0,0,0.5); padding: 15px; margin: 20px 0; border-left: 3px solid var(--accent-blue);">
+            <p style="margin: 0;"><b>TARGET_IP:</b> <span style="font-size: 1.2rem;">{{device.ip}}</span></p>
+            <p style="margin: 5px 0 0 0; color: #aaa;"><b>HW_ADDR:</b> {{device.mac}}</p>
+        </div>
 
-    <h3>🔓 Open Ports</h3>
-    <ul>
-        {% if device.ports %}
-            {% for i in range(device.ports|length) %}
-            <li>{{device.ports[i]}} ({{device.services[i]}})</li>
+        <h3>🔓 PORT_MAPPING</h3>
+        <div style="background: rgba(0,0,0,0.3); padding: 10px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+            <ul style="list-style-type: none; padding-left: 10px; margin: 0;">
+                {% if device.ports %}
+                    {% for i in range(device.ports|length) %}
+                    <li style="margin-bottom: 8px; font-family: monospace;">
+                        <span style="color: var(--warning-color);">RAW_{{device.ports[i]}}</span> 
+                        <span style="opacity: 0.5; margin: 0 10px;">>></span> 
+                        SVC: {{device.services[i]}}
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li style="color:var(--warning-color);">[!] NO_SERVICES_DETECTED</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <h3>🔐 SECURITY_POSTURE</h3>
+        <p style="font-size: 1.1rem;">
+            <b>THREAT_LEVEL:</b> <span class="risk-{{ risk|lower }}" style="font-weight: bold; margin-right: 20px;">{{risk}}</span> 
+            <b>SEVERITY_SCORE:</b> <span style="color: #fff;">{{score}}/100</span>
+        </p>
+
+        {% if issues %}
+        <h4 style="color: var(--alert-color); margin-top: 25px; border-bottom: 1px solid rgba(255,0,0,0.3); padding-bottom: 5px;">⚠ DETECTED VULNERABILITIES</h4>
+        <ul style="list-style-type: square; color: var(--alert-color); padding-left: 20px;">
+            {% for i in issues %}
+            <li style="margin-bottom: 5px;">{{i}}</li>
             {% endfor %}
-        {% else %}
-            <li>No open ports</li>
+        </ul>
         {% endif %}
-    </ul>
 
-    <h3>🧠 Classification</h3>
-    <p><b>{{dtype}}</b> ({{confidence}}%)</p>
-
-    <ul>
-        {% for r in reasons %}
-        <li>{{r}}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>🧠 Behavior Analysis</h3>
-    {% if "53/tcp" in device.ports %}
-    <p>- Acts as DNS provider → likely gateway</p>
-    {% endif %}
-    {% if not device.ports %}
-    <p>- No inbound services → NAT/firewall protected</p>
-    {% endif %}
-
-    <h3>🔐 Security Scorecard</h3>
-    <p><b>Risk:</b> {{risk}}</p>
-    <p><b>Score:</b> {{score}} / 100</p>
-
-    <h4>⚠️ Issues</h4>
-    <ul>
-        {% for i in issues %}
-        <li>{{i}}</li>
-        {% endfor %}
-    </ul>
-
-    <h4>🛠 Fixes</h4>
-    <ul>
-        {% for f in fixes %}
-        <li>{{f}}</li>
-        {% endfor %}
-    </ul>
-
-    <a href="/"><button>Back</button></a>
-
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="/"><button class="btn">TERMINATE_SESSION</button></a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
