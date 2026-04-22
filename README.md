@@ -1,247 +1,356 @@
-# 🛰️ PRIVYSEC — Intelligent IoT Discovery Agent
+# 🔐 PRIVYSEC
 
-> **"From unknown devices to actionable security insights — instantly."**
+### AI-Powered Cross-Platform Network Security Analyzer
 
----
+<p align="center">
+  <b>Scan • Analyze • Detect • Secure</b>
+</p>
 
-## 🚨 Problem Statement
-
-Modern networks are filled with IoT devices like cameras, routers, printers, and smart TVs.
-Most users **do not know**:
-
-* What devices are connected
-* What services they expose
-* How vulnerable they are
-
-This lack of visibility creates a **major security risk**.
-
----
-
-## 💡 Proposed Solution
-
-**PRIVYSEC** is an intelligent IoT Discovery Agent that:
-
-* Automatically scans your local network
-* Identifies active devices
-* Classifies them using fingerprinting logic
-* Detects vulnerabilities based on open ports
-* Assigns a **security score**
-* Provides **actionable fixes**
-
-👉 It transforms raw network data into **clear, human-readable security intelligence**
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python">
+  <img src="https://img.shields.io/badge/Flask-Web%20App-black?style=for-the-badge&logo=flask">
+  <img src="https://img.shields.io/badge/Nmap-Network%20Scanner-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Ollama-AI%20Local-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge">
+</p>
 
 ---
 
-## ⚙️ Tech Stack
+## 🚀 Overview
 
-* **Backend:** Python (Flask)
-* **Scanning Engine:** Nmap
-* **Frontend:** HTML, CSS (Cyberpunk UI)
-* **Logic Modules:**
+**PRIVYSEC** is a modern cybersecurity tool that performs **network scanning, vulnerability detection, and AI-driven security analysis** through an interactive dashboard.
 
-  * Device Fingerprinting Engine
-  * Risk Scoring System
-  * CVE Detection Engine
+It integrates:
+
+* 🔍 **Nmap scanning**
+* 🧠 **Device fingerprinting**
+* ⚠️ **Risk scoring**
+* 💀 **CVE detection**
+* 🤖 **AI-based insights (Ollama + Mistral)**
+* ⚡ **Exploitability analysis**
 
 ---
 
-## 🚀 Features
+## 🌍 Platform Support
 
-### 🔍 Network Discovery
+| OS         | Supported | Notes                       |
+| ---------- | --------- | --------------------------- |
+| 🐧 Linux   | ✅ Full    | Recommended (Kali / Ubuntu) |
+| 🪟 Windows | ✅ Yes     | Requires PATH setup         |
+| 🍎 macOS   | ✅ Yes     | Requires Homebrew           |
 
-* Automatically scans LAN for active hosts
+---
 
-### 🧠 Smart Device Fingerprinting
+## ✨ Features
 
-* Classifies devices:
+### 🔍 1. Network Scanning
 
-  * Router / Gateway
+* Uses **Nmap via subprocess** 
+* Modes:
+
+  * Quick scan
+  * Balanced scan
+  * Deep scan (full ports + OS detection)
+
+---
+
+### 📡 2. Device Discovery
+
+* Scans local subnet automatically
+* Finds all active devices 
+
+---
+
+### 🧠 3. Device Fingerprinting
+
+* Classifies:
+
+  * Gateway / Router
   * IoT Devices
   * Computers
   * Mobile Devices
+* Confidence-based scoring 
 
-### 🔐 Security Scorecard
+---
 
-* Assigns score (0–100)
-* Risk Levels:
+### ⚠️ 4. Risk Scoring Engine
+
+* Score from **0–100**
+* Categories:
 
   * LOW
   * MEDIUM
   * HIGH
-
-### ☠️ Vulnerability Detection
-
-* Maps open ports to known CVEs
-* Highlights risky services like:
-
-  * Telnet
-  * FTP
-  * SMB
-
-### 📊 Attack Surface Analysis
-
-* Shows:
-
-  * High-risk ports
-  * Medium-risk ports
-  * Low-risk ports
-
-### 📈 Risk Visualization (NEW 🔥)
-
-* Color-based risk bars
-* Risk distribution chart
-
-### 🚨 Most Dangerous Device (NEW 🔥)
-
-* Automatically highlights:
-
-  * Highest risk device
-  * Risk score
-  * Open ports
-  * Reason for risk
-
-### 🧾 Scan History
-
-* Stores last 10 scans
+* Based on exposed ports & services 
 
 ---
 
-## 🏗️ Architecture / Flow
+### 💀 5. Vulnerability Detection
 
-User Input (Target IP / Scan)
-        ↓
-Network Discovery (Nmap)
-        ↓
-Parser → Extract Ports, Services, OS
-        ↓
-Fingerprint Engine → Device Type
-        ↓
-Score Engine → Risk + Issues + Fixes
-        ↓
-Vulnerability Engine → CVE Detection
-        ↓
-Dashboard Visualization
+* Maps ports → known CVEs
+* Uses internal database 
+
+---
+
+### 📊 6. Attack Surface Analysis
+
+* Calculates:
+
+  * % High risk ports
+  * % Medium risk ports
+  * % Low risk ports
+* Uses normalized distribution (accurate visualization)
+
+---
+
+### 🤖 7. AI Security Engine
+
+Powered by **Ollama (local LLM)** 
+
+Generates:
+
+* Security insights
+* Issues & fixes
+* Human-readable explanations
+
+---
+
+### ⚡ 8. Exploitability Analysis
+
+* AI determines:
+
+  * HIGH / MEDIUM / LOW exploitability
+* Explains:
+
+  * attack vectors
+  * possible exploitation paths
+
+---
+
+### 🛠 9. Fix Recommendation System
+
+* Provides actionable fixes:
+
+  * Disable services
+  * Secure configurations
+  * Patch vulnerabilities
+
+---
+
+## 🏗️ Project Structure
+
+```bash
+privysec/
+│
+├── app.py              # Main Flask backend
+├── scanner.py          # Nmap execution
+├── parser.py           # Scan parsing
+├── discovery.py        # Network discovery
+├── fingerprint.py      # Device classification
+├── scorecard.py        # Risk scoring
+├── vuln.py             # CVE detection
+├── port_db.py          # Port risk database
+├── network.py          # Network type detection
+├── ai.py               # AI (Ollama integration)
+│
+├── templates/
+│   ├── index.html
+│   ├── devices.html
+│   ├── dashboard.html
+│   └── login.html
+│
+├── static/
+│   └── style.css
+│
+└── README.md
 ```
 
 ---
 
+## ⚙️ Installation Guide
 
-## 🚀 Setup & Installation
+---
 
-### 1. Clone the repository
+# 🐧 Linux (Kali / Ubuntu)
 
 ```bash
+# Clone repository
 git clone https://github.com/your-username/privysec.git
 cd privysec
-```
 
----
-
-## 🐍 Create Virtual Environment
-
-### 🔹 On Linux / macOS:
-
-```bash
+# Create virtual environment
 python3 -m venv venv
-```
+source venv/bin/activate
 
-### 🔹 On Windows:
+# Install dependencies
+pip install -r requirements.txt
 
-```bat
-python -m venv venv
+# Install Nmap
+sudo apt install nmap
+
+# Install Ollama (AI)
+curl -fsSL https://ollama.com/install.sh | sh
+ollama run mistral
+
+# Run application
+python app.py
 ```
 
 ---
 
-## ⚡ Activate Virtual Environment
-
-### 🔹 On Linux / macOS:
-
-```bash
-source venv/bin/activate
-```
-
-### 🔹 On Windows (CMD):
-
-```bat
-venv\Scripts\activate
-```
-
-### 🔹 On Windows (PowerShell):
+# 🪟 Windows
 
 ```powershell
-venv\Scripts\Activate.ps1
-```
+git clone https://github.com/your-username/privysec.git
+cd privysec
 
----
+python -m venv venv
+venv\Scripts\activate
 
-## 📦 Install Dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
----
+### Install Nmap:
 
-## 🔐 Setup Environment Variables
+* Download: https://nmap.org/download.html
+* Install and add to PATH:
 
-Create a `.env` file in the root directory:
-
-```env
-OPENAI_API_KEY=your_api_key_here
+```
+C:\Program Files (x86)\Nmap
 ```
 
----
+### Install Ollama:
 
-## ▶️ Run the Application
+* Download: https://ollama.com/download
+* Run:
 
-### 🔹 Linux / macOS:
+```bash
+ollama run mistral
+```
+
+### Run App:
 
 ```bash
 python app.py
 ```
 
-### 🔹 Windows:
+---
 
-```bat
+# 🍎 macOS
+
+```bash
+# Install Homebrew (if not installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Clone repo
+git clone https://github.com/your-username/privysec.git
+cd privysec
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install nmap
+brew install nmap
+
+# Install Ollama
+brew install ollama
+ollama run mistral
+
+# Run app
 python app.py
 ```
 
 ---
 
-## 🌐 Open in Browser
+## ▶️ Access Application
 
-```
+Open browser:
+
+```text
 http://127.0.0.1:5000
 ```
 
 ---
 
-## ⚠️ Additional Requirements
+## 🔐 Default Login
 
-### Install Nmap
-
-### 🔹 Linux:
-
-```bash
-sudo apt install nmap
+```text
+Username: admin
+Password: admin
 ```
 
-### 🔹 Windows:
+---
 
-* Download from: https://nmap.org/download.html
-* Install normally (Next → Next)
+## 🧠 Workflow
+
+1. Discover devices on network
+2. Select target
+3. Run scan (Quick / Balanced / Deep)
+4. System processes:
+
+   * Parsing
+   * Classification
+   * Risk scoring
+   * CVE detection
+5. AI generates:
+
+   * Security insight
+   * Exploitability analysis
+6. Dashboard displays results
 
 ---
 
-## 🧠 Notes
+## 📸 Screenshots
 
-* Always activate `venv` before running
-* Do NOT upload `.env` to GitHub
-* Works on Linux, macOS, and Windows
+*(Add images here for GitHub impact)*
 
 ---
 
-snapshorts 
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4e5a4f07-6aba-4787-986e-e18c66f1b296" />
+## ⚠️ Known Issues
 
+* Nmap must be installed and accessible in PATH
+* AI requires Ollama running locally
+* Windows may need manual PATH configuration
+
+---
+
+## ⚠️ Disclaimer
+
+This tool is for:
+
+✔ Educational use
+✔ Authorized penetration testing
+
+❌ Do NOT use on unauthorized networks
+
+---
+
+## 👨‍💻 Author
+
+**Tishan Kumar B**
+Cybersecurity Student
+
+---
+
+## 🏷️ Watermark
+
+<p align="center">
+  <b>⚡ PRIVYSEC // Built by Tishan Kumar ⚡</b>
+</p>
+
+---
+
+## ⭐ Support
+
+If you found this useful:
+
+⭐ Star the repository
+🔁 Share it
+🛠 Contribute
+
+---
