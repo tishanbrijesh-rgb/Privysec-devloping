@@ -7,87 +7,117 @@
 <body>
 
 <div class="main">
-    <h2 style="color: #fff; text-shadow: 0 0 10px var(--main-glow); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 30px;">
-        <span style="color: var(--main-color);">[SYS_UPLINK]</span> Intelligence Report: {{ data.ip }}
+
+    <!-- HEADER -->
+    <h2 style="color:#fff; text-shadow:0 0 10px var(--main-glow); border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+        <span style="color: var(--main-color);">[SCAN]</span> {{ data.ip }}
     </h2>
 
-    {% if unknown_alert %}
-    <div class="card alert-card wide-card" style="margin-bottom: 25px;">
-        <h3 style="color: var(--alert-color);">⚠ CRITICAL: UNKNOWN DEVICE DETECTED</h3>
-        <p class="text-high">Unidentified footprint detected on secure subnet. Initiate immediate quarantine protocols.</p>
+    <!-- 🚨 MOST DANGEROUS DEVICE -->
+    {% if is_dangerous %}
+    <div class="card alert-card wide-card" style="margin-bottom:20px;">
+        <h3>🚨 MOST DANGEROUS DEVICE</h3>
+        <p class="text-high">{{ danger_reason }}</p>
     </div>
     {% endif %}
 
+    <!-- ⚠ UNKNOWN DEVICE -->
+    {% if unknown_alert %}
+    <div class="card alert-card wide-card" style="margin-bottom:20px;">
+        <h3>⚠ UNKNOWN DEVICE DETECTED</h3>
+        <p>Unidentified device on network</p>
+    </div>
+    {% endif %}
+
+    <!-- GRID -->
     <div class="grid">
-        
+
+        <!-- DEVICE INFO -->
         <div class="card">
-            <h3>🛰 Node Identity</h3>
-            <p><b>IP_ADDR:</b> {{ data.ip }}</p>
-            <p><b>MAC_ADDR:</b> {{ data.mac }}</p>
-            <p><b>NET_ZONE:</b> {{ network_type }}</p>
+            <h3>🛰 Device Info</h3>
+            <p><b>IP:</b> {{ data.ip }}</p>
+            <p><b>MAC:</b> {{ data.mac }}</p>
+            <p><b>Network:</b> {{ network_type }}</p>
         </div>
 
+        <!-- CLASSIFICATION -->
         <div class="card">
-            <h3>🧠 Classification Engine</h3>
-            <p><b>PROFILE:</b> {{ device.type }}</p>
-            <p><b>CONFIDENCE:</b> {{ device.confidence }}%</p>
+            <h3>🧠 Classification</h3>
+            <p><b>Type:</b> {{ device.type }}</p>
+            <p><b>Confidence:</b> {{ device.confidence }}%</p>
+
             <div class="progress-container">
                 <div class="progress-bar" style="width: {{ device.confidence }}%"></div>
             </div>
         </div>
 
-        <div class="card half-card">
-            <h3>⚠ Threat Assessment</h3>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <p class="big risk-{{ risk|lower }}">{{ risk }}</p>
-                    <p>SEVERITY INDEX: {{ score }}/100</p>
-                </div>
-                <div style="text-align: right;">
-                    <p class="text-high">HIGH_SEV: {{ attack_surface.high }}</p>
-                    <p class="text-medium">MED_SEV: {{ attack_surface.medium }}</p>
-                    <p class="text-low">LOW_SEV: {{ attack_surface.low }}</p>
-                </div>
+        <!-- RISK -->
+        <div class="card">
+            <h3>⚠ Risk Score</h3>
+            <p class="big risk-{{ risk|lower }}">{{ risk }}</p>
+            <p>Score: {{ score }}/100</p>
+        </div>
+
+        <!-- 📊 ATTACK SURFACE GRAPH -->
+        <div class="card">
+            <h3>📊 Attack Surface</h3>
+
+            <p>High Risk: {{ attack_surface.high }}</p>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: {{ attack_surface.high * 20 }}%; background:red;"></div>
+            </div>
+
+            <p>Medium Risk: {{ attack_surface.medium }}</p>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: {{ attack_surface.medium * 20 }}%; background:orange;"></div>
+            </div>
+
+            <p>Low Risk: {{ attack_surface.low }}</p>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: {{ attack_surface.low * 20 }}%;"></div>
             </div>
         </div>
 
+        <!-- PORTS -->
         <div class="card">
-            <h3>🔓 Active Port Matrix</h3>
-            <div style="max-height: 150px; overflow-y: auto;">
+            <h3>🔓 Open Ports</h3>
+            <div style="max-height:150px; overflow-y:auto;">
                 {% for p, s in paired_ports %}
                 <p class="
                     {% if '23/tcp' in p or '21/tcp' in p %} port-risk
                     {% elif '80/tcp' in p %} port-medium
                     {% else %} port-safe {% endif %}
                 ">
-                    > {{ p }} <span style="opacity: 0.5;">//</span> {{ s }}
+                    {{ p }} → {{ s }}
                 </p>
                 {% endfor %}
             </div>
         </div>
 
+        <!-- CVE -->
         <div class="card">
-            <h3>💀 Active CVE Signatures</h3>
+            <h3>💀 Vulnerabilities</h3>
             {% if vulns %}
                 {% for v in vulns %}
                 <p class="text-high">[!] {{ v }}</p>
                 {% endfor %}
             {% else %}
-                <p class="text-low">[✓] NO KNOWN CVE SIGNATURES</p>
+                <p class="text-low">No known CVEs</p>
             {% endif %}
         </div>
 
+        <!-- FIXES -->
         <div class="card wide-card">
-            <h3>🛠 Tactical Remediation</h3>
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+            <h3>🛠 Fixes</h3>
+            <div class="grid" style="grid-template-columns:1fr 1fr;">
                 <div>
-                    <b style="color: var(--alert-color);">VECTORS FOUND:</b>
+                    <b style="color:red;">Issues</b>
                     {% for i in issues %}
                     <p class="text-high">• {{ i }}</p>
                     {% endfor %}
                 </div>
                 <div>
-                    <b style="color: var(--main-color);">RECOMMENDED FIXES:</b>
+                    <b style="color:var(--main-color);">Solutions</b>
                     {% for f in fixes %}
                     <p class="text-low">• {{ f }}</p>
                     {% endfor %}
@@ -95,43 +125,38 @@
             </div>
         </div>
 
-    </div>
+        <!-- 🤖 AI INSIGHT -->
+        <div class="card wide-card">
+            <h3>🤖 AI Security Insight</h3>
+            <p style="line-height:1.6;">
+                {{ ai_summary }}
+            </p>
+        </div>
+	<div class="card wide-card">
+    <h3>⚡ AI Exploitability Analysis</h3>
 
-    <div class="terminal" id="terminalBox">
-        <div id="terminal"></div>
-    </div>
+    <p class="big risk-{{ exploit_level|lower }}">
+        {{ exploit_level }}
+    </p>
 
-    <div style="margin-top: 20px;">
-        <a href="/discover">
-            <button class="btn">← RETURN TO RADAR</button>
-        </a>
+    <div style="margin-top:10px;">
+        {% for r in exploit_reasons %}
+        <p class="text-medium">• {{ r }}</p>
+        {% endfor %}
     </div>
 </div>
 
-<script>
-const lines = [
-    "<span style='color: var(--main-color)'>[SYSTEM]</span> Initializing advanced scan engine...",
-    "<span style='color: #ccc'>[INFO]</span> Injecting packets to target {{ data.ip }}...",
-    "<span style='color: var(--warning-color)'>[ANALYSIS]</span> Mapping open ports and service headers...",
-    "<span style='color: #ccc'>[INFO]</span> Correlating fingerprints with CVE database...",
-    "<span style='color: var(--main-color)'>[OK]</span> Risk calculation complete.",
-    "<span style='color: var(--accent-blue)'>[✓] REPORT GENERATED SUCCESSFULLY</span>"
-];
 
-let i = 0;
-const terminalDiv = document.getElementById("terminal");
-const terminalBox = document.getElementById("terminalBox");
+    </div>
 
-function animate(){
-    if(i < lines.length){
-        terminalDiv.innerHTML += lines[i] + "<br><br>";
-        terminalBox.scrollTop = terminalBox.scrollHeight; // Auto-scroll
-        i++;
-        setTimeout(animate, Math.random() * 400 + 200); // Randomized typing speed
-    }
-}
-setTimeout(animate, 500);
-</script>
+    <!-- BACK BUTTON -->
+    <div style="margin-top:20px;">
+        <a href="/discover">
+            <button class="btn">← Back</button>
+        </a>
+    </div>
+
+</div>
 
 </body>
 </html>

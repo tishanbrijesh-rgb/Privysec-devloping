@@ -239,7 +239,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 ::-webkit-scrollbar-thumb { background: var(--border-color); }
 ::-webkit-scrollbar-thumb:hover { background: var(--main-color); }
 
-/* GLITCH TEXT */
+
 .glitch {
     font-size: 3.5rem;
     font-weight: bold;
