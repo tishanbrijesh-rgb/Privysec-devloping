@@ -176,8 +176,8 @@ privysec/
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/privysec.git
-cd privysec
+git clone https://github.com/tishanbrijesh-rgb/H2H-Nullpointers-PrivySec.git
+cd H2H-Nullpointers-PrivySec
 
 # Create virtual environment
 python3 -m venv venv
@@ -202,8 +202,8 @@ python app.py
 # 🪟 Windows
 
 ```powershell
-git clone https://github.com/your-username/privysec.git
-cd privysec
+git clone https://github.com/tishanbrijesh-rgb/H2H-Nullpointers-PrivySec.git
+cd H2H-Nullpointers-PrivySec
 
 python -m venv venv
 venv\Scripts\activate
@@ -244,8 +244,8 @@ python app.py
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Clone repo
-git clone https://github.com/your-username/privysec.git
-cd privysec
+git clone https://github.com/tishanbrijesh-rgb/H2H-Nullpointers-PrivySec.git
+cd H2H-Nullpointers-PrivySec
 
 # Create virtual environment
 python3 -m venv venv
